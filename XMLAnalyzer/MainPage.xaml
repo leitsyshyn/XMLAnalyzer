@@ -1,0 +1,99 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XMLAnalyzer.MainPage"
+             >
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <!-- Button to Select File -->
+            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                <Button Grid.Column="0" Text="Select XML File" Command="{Binding SelectFileCommand}" />
+                <Button Grid.Column="1" Text="About" Command="{Binding AboutCommand}" />
+                <Button Grid.Column="2" Text="Exit" Command="{Binding ExitCommand}" />
+            </Grid>
+            <!-- Label to Display Selected File Path -->
+            <Label Text="{Binding SelectedFilePath, StringFormat='Selected File: {0}'}" FontSize="14" TextColor="Gray" />
+
+            <!-- Single Row for All Pickers -->
+
+            <VerticalStackLayout Spacing="15" IsVisible="{Binding IsFileSelected}">
+                <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="10">
+                    <Picker Grid.Column="0" ItemsSource="{Binding Faculties}" 
+                        SelectedItem="{Binding SelectedFaculty}" 
+                        Title="Select Faculty" 
+                        HorizontalOptions="FillAndExpand" />
+
+                    <Picker Grid.Column="1" ItemsSource="{Binding Departments}" 
+                        SelectedItem="{Binding SelectedDepartment}" 
+                        Title="Select Department" 
+                        HorizontalOptions="FillAndExpand" />
+
+                    <Picker Grid.Column="2" ItemsSource="{Binding Degrees}" 
+                        SelectedItem="{Binding SelectedDegree}" 
+                        Title="Select Degree" 
+                        HorizontalOptions="FillAndExpand" />
+
+                    <Picker Grid.Column="3" ItemsSource="{Binding Titles}" 
+                        SelectedItem="{Binding SelectedTitle}" 
+                        Title="Select Title" 
+                        HorizontalOptions="FillAndExpand" />
+                </Grid>
+
+                <!-- Buttons -->
+                <Picker ItemsSource="{Binding ParsingStrategies}" 
+                    SelectedItem="{Binding SelectedStrategy}" 
+                    Title="Select Parsing Strategy" />
+
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                    <Button Grid.Column="0" Text="Search" Command="{Binding SearchCommand}" />
+                    <Button Grid.Column="1" Text="Transform" Command="{Binding TransformCommand}" />
+                    <Button Grid.Column="2" Text="Clear" Command="{Binding ClearCommand}" />
+                </Grid>
+
+                <!-- ListView for Displaying Filtered Staff -->
+                <ListView ItemsSource="{Binding FilteredStaff}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid Padding="10" ColumnSpacing="10" RowSpacing="5">
+                                    <!-- Define Columns -->
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Define Rows -->
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <!-- First Row -->
+                                    <Label Text="{Binding FirstName}" Grid.Row="0" Grid.Column="0" />
+                                    <Label Text="{Binding MiddleName}" Grid.Row="0" Grid.Column="1" />
+                                    <Label Text="{Binding LastName}" Grid.Row="0" Grid.Column="2" />
+                                    <Label Text="{Binding Faculty}" Grid.Row="1" Grid.Column="3" />
+                                    <Label Text="{Binding Department}" Grid.Row="1" Grid.Column="4" />
+                                    <Label Text="{Binding DegreeLevel}" Grid.Row="2" Grid.Column="5" />
+                                    <Label Text="{Binding DegreeSpecialization}" Grid.Row="2" Grid.Column="6" />
+                                    <Label Text="{Binding DegreeAwardDate}" Grid.Row="2" Grid.Column="7" />
+                                    <Label Text="{Binding TitleName}" Grid.Row="3" Grid.Column="8" />
+                                    <Label Text="{Binding TitleStartDate}" Grid.Row="3" Grid.Column="9" />
+                                    <Label Text="{Binding TitleEndDate}" Grid.Row="3" Grid.Column="10" />
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
