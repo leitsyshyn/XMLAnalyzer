@@ -40,7 +40,6 @@ namespace XMLAnalyzer.Services
         }
 
 
-        // Validate XML against XSD
         public bool ValidateXml(string xmlFilePath, out string validationErrors)
         {
             validationErrors = string.Empty;
@@ -48,10 +47,8 @@ namespace XMLAnalyzer.Services
 
             try
             {
-                // Load the XML document
                 XDocument doc = XDocument.Load(xmlFilePath);
 
-                // Extract schema location from XML (if present)
                 var schemaLocation = doc.Root?.Attribute(XNamespace.Xmlns + "xsi")?.Value;
                 if (string.IsNullOrEmpty(schemaLocation))
                 {
@@ -59,11 +56,9 @@ namespace XMLAnalyzer.Services
                     return false;
                 }
 
-                // Prepare schema set
                 XmlSchemaSet schemaSet = new XmlSchemaSet();
-                schemaSet.Add(null, schemaLocation); // Use schema location from XML
+                schemaSet.Add(null, schemaLocation); 
 
-                // Validate XML
                 doc.Validate(schemaSet, (sender, e) =>
                 {
                     localErrors.AppendLine(e.Message);
@@ -81,7 +76,6 @@ namespace XMLAnalyzer.Services
 
 
 
-        // Extract unique values for pickers
         public IEnumerable<string> GetPickerItems(string filePath, string elementName)
         {
             try
@@ -126,7 +120,6 @@ namespace XMLAnalyzer.Services
 
 
 
-        // Parse and filter XML
         public List<StaffMember> Parse(string xmlFilePath, string? xpathQuery = null, StaffFilter? filter = null)
         {
             return _strategy.Parse(xmlFilePath, xpathQuery, filter);

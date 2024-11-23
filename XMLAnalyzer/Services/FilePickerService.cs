@@ -12,24 +12,21 @@ namespace XMLAnalyzer.Services
         {
             try
             {
-                // Define custom XML file type
                 var customXMLFileType = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
                 {
-                    { DevicePlatform.iOS, new[] { "public.xml" } }, // iOS
-                    { DevicePlatform.Android, new[] { "application/xml" } }, // Android
-                    { DevicePlatform.WinUI, new[] { ".xml" } }, // Windows
-                    { DevicePlatform.Tizen, new[] { "application/xml" } }, // Tizen
-                    { DevicePlatform.macOS, new[] { "public.xml" } } // macOS
+                    { DevicePlatform.iOS, new[] { "public.xml" } },
+                    { DevicePlatform.Android, new[] { "application/xml" } },
+                    { DevicePlatform.WinUI, new[] { ".xml" } }, 
+                    { DevicePlatform.Tizen, new[] { "application/xml" } },
+                    { DevicePlatform.macOS, new[] { "public.xml" } } 
                 });
 
-                // Show the file picker dialog
                 FileResult? result = await FilePicker.PickAsync(new PickOptions
                 {
-                    FileTypes = customXMLFileType, // Filter by XML files
+                    FileTypes = customXMLFileType,
                     PickerTitle = "Select an XML file"
                 });
 
-                // If a file is selected, return its file path
                 if (result != null)
                 {
                     Console.WriteLine(result.FullPath);

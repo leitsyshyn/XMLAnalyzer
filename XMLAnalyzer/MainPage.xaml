@@ -5,16 +5,13 @@
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
 
-            <!-- Button to Select File -->
             <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
                 <Button Grid.Column="0" Text="Select XML File" Command="{Binding SelectFileCommand}" />
                 <Button Grid.Column="1" Text="About" Command="{Binding AboutCommand}" />
                 <Button Grid.Column="2" Text="Exit" Command="{Binding ExitCommand}" />
             </Grid>
-            <!-- Label to Display Selected File Path -->
             <Label Text="{Binding SelectedFilePath, StringFormat='Selected File: {0}'}" FontSize="14" TextColor="Gray" />
 
-            <!-- Single Row for All Pickers -->
 
             <VerticalStackLayout Spacing="15" IsVisible="{Binding IsFileSelected}">
                 <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="10">
@@ -39,7 +36,6 @@
                         HorizontalOptions="FillAndExpand" />
                 </Grid>
 
-                <!-- Buttons -->
                 <Picker ItemsSource="{Binding ParsingStrategies}" 
                     SelectedItem="{Binding SelectedStrategy}" 
                     Title="Select Parsing Strategy" />
@@ -50,13 +46,11 @@
                     <Button Grid.Column="2" Text="Clear" Command="{Binding ClearCommand}" />
                 </Grid>
 
-                <!-- ListView for Displaying Filtered Staff -->
                 <ListView ItemsSource="{Binding FilteredStaff}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
                                 <Grid Padding="10" ColumnSpacing="10" RowSpacing="5">
-                                    <!-- Define Columns -->
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="*" />
@@ -71,12 +65,10 @@
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
 
-                                    <!-- Define Rows -->
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
 
-                                    <!-- First Row -->
                                     <Label Text="{Binding FirstName}" Grid.Row="0" Grid.Column="0" />
                                     <Label Text="{Binding MiddleName}" Grid.Row="0" Grid.Column="1" />
                                     <Label Text="{Binding LastName}" Grid.Row="0" Grid.Column="2" />

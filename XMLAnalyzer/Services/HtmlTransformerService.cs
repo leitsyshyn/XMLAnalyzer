@@ -9,11 +9,9 @@ namespace XMLAnalyzer.Services
         {
             try
             {
-                // Load the XSLT
                 XslCompiledTransform xslt = new XslCompiledTransform();
                 xslt.Load(xsltFilePath);
 
-                // Transform the XML file to HTML
                 using XmlWriter writer = XmlWriter.Create(outputHtmlFilePath);
                 xslt.Transform(xmlFilePath, writer);
             }

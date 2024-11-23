@@ -18,7 +18,7 @@ namespace XMLAnalyzer.Strategies
 
             IEnumerable<XElement> elements = string.IsNullOrEmpty(filterQuery)
                 ? doc.Descendants("Scientist")
-                : doc.XPathSelectElements(filterQuery); // Apply XPath query if provided
+                : doc.XPathSelectElements(filterQuery); 
 
             return elements.Select(scientist => new StaffMember
             {

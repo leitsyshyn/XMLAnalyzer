@@ -59,7 +59,6 @@ namespace XMLAnalyzer.Strategies
                 }
             }
 
-            // Filter staff members using the StaffFilter object
             if (filter != null)
             {
                 staffMembers = ApplyFilters(staffMembers, filter);

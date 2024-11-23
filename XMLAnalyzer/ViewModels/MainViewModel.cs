@@ -13,7 +13,6 @@ namespace XMLAnalyzer.ViewModels
 
         private readonly HtmlTransformerService _htmlTransformer;
 
-        // File selection
         private bool _isFileSelected;
         public bool IsFileSelected
         {
@@ -44,7 +43,7 @@ namespace XMLAnalyzer.ViewModels
             if (!string.IsNullOrEmpty(xmlFilePath))
             {
                 SelectedFilePath = xmlFilePath;
-                IsFileSelected = true; // Enable other UI elements
+                IsFileSelected = true;
                 PopulatePickers();
             }
             else
@@ -53,13 +52,11 @@ namespace XMLAnalyzer.ViewModels
             }
         }
 
-        // Observable collections for UI pickers
         public ObservableCollection<string> Faculties { get; set; }
         public ObservableCollection<string> Departments { get; set; }
         public ObservableCollection<string> Degrees { get; set; }
         public ObservableCollection<string> Titles { get; set; }
 
-        // Selected values from pickers
         private string _selectedFaculty;
         public string SelectedFaculty
         {
@@ -68,11 +65,9 @@ namespace XMLAnalyzer.ViewModels
             {
                 if (SetProperty(ref _selectedFaculty, value))
                 {
-                    // Update Departments based on SelectedFaculty
                     Departments.Clear();
                     if (!string.IsNullOrEmpty(value))
                     {
-                        // Populate departments for the selected faculty
                         foreach (var department in _xmlProcessor.GetPickerItemsByParent(_selectedFilePath, "Department", "Faculty", value))
                         {
                             Departments.Add(department);
@@ -80,7 +75,6 @@ namespace XMLAnalyzer.ViewModels
                     }
                     else
                     {
-                        // If no faculty is selected, show all departments
                         foreach (var department in _xmlProcessor.GetPickerItems(_selectedFilePath, "Department"))
                         {
                             Departments.Add(department);
@@ -111,7 +105,6 @@ namespace XMLAnalyzer.ViewModels
             set => SetProperty(ref _selectedTitle, value);
         }
 
-        // Parsing strategy
         public ObservableCollection<string> ParsingStrategies { get; set; }
 
         private string _selectedStrategy;
@@ -128,10 +121,8 @@ namespace XMLAnalyzer.ViewModels
             }
         }
 
-        // Filtered staff members for display
         public ObservableCollection<StaffMember> FilteredStaff { get; set; }
 
-        // Commands
         public ICommand AboutCommand { get; }
         public ICommand ExitCommand { get; }
         public ICommand SearchCommand { get; }
@@ -157,7 +148,7 @@ namespace XMLAnalyzer.ViewModels
             ExitCommand = new Command(async () => await OnExit());
             TransformCommand = new Command(OnTransform);
 
-            IsFileSelected = false; // Default state
+            IsFileSelected = false;
         }
         private void PopulatePickers()
         {
@@ -189,7 +180,6 @@ namespace XMLAnalyzer.ViewModels
 
         private async Task OnAbout()
         {
-            // Display about information
             await Application.Current.MainPage.DisplayAlert(
                 "About",
                 "OOP Lab #2: \"XML Analyzer\"\nAuthor: Leitsyshyn Tymofii K-24\nVariant: 16",
@@ -198,7 +188,6 @@ namespace XMLAnalyzer.ViewModels
 
         private async Task OnExit()
         {
-            // Confirm before exiting the app
             bool confirm = await Application.Current.MainPage.DisplayAlert(
                 "Exit",
                 "Are you sure you want to exit the app?",
@@ -207,7 +196,6 @@ namespace XMLAnalyzer.ViewModels
 
             if (confirm)
             {
-                // Close the application
                 Application.Current.Quit();
             }
         }
@@ -216,7 +204,6 @@ namespace XMLAnalyzer.ViewModels
         {
             if (SelectedStrategy == "SAX")
             {
-                // Create a filter object for SAX
                 var filter = new StaffFilter
                 {
                     Faculty = SelectedFaculty,
@@ -230,7 +217,6 @@ namespace XMLAnalyzer.ViewModels
             }
             else
             {
-                // Build XPath for DOM or LINQ
                 var xpathQuery = BuildXPathQuery(SelectedFaculty, SelectedDepartment, SelectedDegree, SelectedTitle);
 
                 var results = _xmlProcessor.Parse(_selectedFilePath, xpathQuery: xpathQuery);
@@ -240,14 +226,12 @@ namespace XMLAnalyzer.ViewModels
 
         private void OnClear()
         {
-            // Clear selected values
             SelectedFaculty = null;
             SelectedDepartment = null;
             SelectedDegree = null;
             SelectedTitle = null;
             SelectedStrategy = null;
 
-            // Clear the FilteredStaff collection
             FilteredStaff.Clear();
         }
 
@@ -261,15 +245,12 @@ namespace XMLAnalyzer.ViewModels
                     return;
                 }
 
-                // Define file paths
                 string filteredXmlFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "FilteredResults.xml");
                 string xsltFilePath = "C:\\Users\\Leitsyshyn\\source\\repos\\XMLAnalyzer\\XMLAnalyzer\\Resources\\Data\\StaffTemplate.xslt"; 
                 string outputHtmlFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "FilteredResults.html");
 
-                // Step 1: Generate a filtered XML file
                 GenerateFilteredXml(filteredXmlFilePath);
 
-                // Step 2: Transform the filtered XML to HTML
                 _htmlTransformer.Transform(filteredXmlFilePath, xsltFilePath, outputHtmlFilePath);
 
                 await Application.Current.MainPage.DisplayAlert(
@@ -306,10 +287,8 @@ namespace XMLAnalyzer.ViewModels
 
         private void UpdateFilteredStaff(IEnumerable<StaffMember> results)
         {
-            // Clear the existing FilteredStaff collection
             FilteredStaff.Clear();
 
-            // Add the new filtered results
             foreach (var staff in results)
             {
                 FilteredStaff.Add(staff);
@@ -320,7 +299,6 @@ namespace XMLAnalyzer.ViewModels
         {
             try
             {
-                // Create XML document dynamically
                 var xmlDoc = new XDocument(
                     new XElement("Scientists",
                         FilteredStaff.Select(staff => new XElement("Scientist",
@@ -339,7 +317,6 @@ namespace XMLAnalyzer.ViewModels
                     )
                 );
 
-                // Save to file
                 xmlDoc.Save(outputFilePath);
             }
             catch (Exception ex)

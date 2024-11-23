@@ -20,7 +20,7 @@ namespace XMLAnalyzer.Strategies
 
             XmlNodeList scientistNodes = string.IsNullOrEmpty(filterQuery)
              ? doc.SelectNodes("//Scientist")
-             : doc.SelectNodes(filterQuery); // Use XPath query if provided
+             : doc.SelectNodes(filterQuery);
 
 
             foreach (XmlNode scientistNode in scientistNodes)
